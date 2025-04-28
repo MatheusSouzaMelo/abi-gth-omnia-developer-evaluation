@@ -29,7 +29,7 @@ public class User : BaseEntity, IUser
     /// Gets the user's phone number.
     /// Must be a valid phone number format following the pattern (XX) XXXXX-XXXX.
     /// </summary>
-    public string Phone { get; set; } = string.Empty ;
+    public string Phone { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets the hashed password for authentication.
@@ -42,7 +42,7 @@ public class User : BaseEntity, IUser
     /// Gets the user's role in the system.
     /// Determines the user's permissions and access levels.
     /// </summary>
-    public UserRole Role { get;     set; }
+    public UserRole Role { get; set; }
 
     /// <summary>
     /// Gets the user's current status.
@@ -77,6 +77,16 @@ public class User : BaseEntity, IUser
     /// </summary>
     /// <returns>The user's role as a string.</returns>
     string IUser.Role => Role.ToString();
+
+    /// <summary>
+    /// Gets the user's name information.
+    /// </summary>
+    public Name Name { get; set; } = new Name();
+
+    /// <summary>
+    /// Gets the user's address information.
+    /// </summary>
+    public Address Address { get; set; } = new Address();
 
     /// <summary>
     /// Initializes a new instance of the User class.

@@ -29,5 +29,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion<string>()
             .HasMaxLength(20);
 
+        builder.OwnsOne(u => u.Name, n =>
+        {
+            n.Property(p => p.Firstname).HasColumnName("FirstName");
+            n.Property(p => p.Lastname).HasColumnName("LastName");
+        });
+
+        builder.OwnsOne(u => u.Address, a =>
+        {
+            a.OwnsOne(addr => addr.Geolocation, g =>
+            {
+                g.Property(p => p.Lat).HasColumnName("GeoLat");
+                g.Property(p => p.Long).HasColumnName("GeoLong");
+            });
+        });
     }
 }

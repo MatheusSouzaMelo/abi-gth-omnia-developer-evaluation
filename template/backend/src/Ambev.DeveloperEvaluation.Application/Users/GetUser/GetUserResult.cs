@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
@@ -7,15 +8,30 @@ namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
 /// </summary>
 public class GetUserResult
 {
-    /// <summary>
-    /// The unique identifier of the user
+    // <summary>
+    /// The unique identifier of the created user
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// The user's full name
+    /// Gets or sets the username. Must be unique and contain only valid characters.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the password. Must meet security requirements.
+    /// </summary>
+    public string Password { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the name. Must be not null.
+    /// </summary>
+    public Name Name { get; set; } = new Name();
+
+    /// <summary>
+    /// Gets or sets the address. Must be not null.
+    /// </summary>
+    public Address Address { get; set; } = new Address();
 
     /// <summary>
     /// The user's email address
@@ -25,7 +41,7 @@ public class GetUserResult
     /// <summary>
     /// The user's phone number
     /// </summary>
-    public string Phone { get; set; } = string.Empty;   
+    public string Phone { get; set; } = string.Empty;
 
     /// <summary>
     /// The user's role in the system
