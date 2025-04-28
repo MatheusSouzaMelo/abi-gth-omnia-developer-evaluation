@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using System.Linq;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 
@@ -38,4 +39,20 @@ public interface IUserRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the user was deleted, false if not found</returns>
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves all users
+    /// </summary>
+    /// <param name="order">query order params</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The user if found, null otherwise</returns>
+    IQueryable<User> ListUsers(string order, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Update user by id
+    /// </summary>
+    /// <param name="user">The user data to be updated</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The user if found, null otherwise</returns>
+    Task<User> UpdateUserAsync(User user, CancellationToken cancellationToken = default);
 }

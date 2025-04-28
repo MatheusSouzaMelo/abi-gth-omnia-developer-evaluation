@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
@@ -8,14 +9,29 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
 public class GetUserResponse
 {
     /// <summary>
-    /// The unique identifier of the user
+    /// The unique identifier of the created user
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// The user's full name
+    /// Gets or sets the username. Must be unique and contain only valid characters.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the password. Must meet security requirements.
+    /// </summary>
+    public string Password { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the name. Must be not null.
+    /// </summary>
+    public Name Name { get; set; } = new Name();
+
+    /// <summary>
+    /// Gets or sets the address. Must be not null.
+    /// </summary>
+    public Address Address { get; set; } = new Address();
 
     /// <summary>
     /// The user's email address

@@ -20,6 +20,8 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     /// - Phone: Must match international format (+X XXXXXXXXXX)
     /// - Status: Cannot be set to Unknown
     /// - Role: Cannot be set to None
+    /// - Name: Must be not null and follow the rules on NameValidator
+    /// - Address: Must be not null and follow the rules on AddressValidator
     /// </remarks>
     public CreateUserCommandValidator()
     {
@@ -29,5 +31,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(user => user.Phone).Matches(@"^\+?[1-9]\d{1,14}$");
         RuleFor(user => user.Status).NotEqual(UserStatus.Unknown);
         RuleFor(user => user.Role).NotEqual(UserRole.None);
+        RuleFor(user => user.Name).NotNull().SetValidator(new NameValidator());
+        RuleFor(user => user.Address).NotNull().SetValidator(new AddressValidator());
     }
 }

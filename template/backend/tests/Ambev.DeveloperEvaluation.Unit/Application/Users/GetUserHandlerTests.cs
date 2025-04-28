@@ -44,7 +44,11 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             {
                 Id = user.Id,
                 Email = user.Email,
-                Name = "User",
+                Name = new Name() 
+                {
+                    Firstname = "First",
+                    Lastname = "Last"
+                },
                 Phone = user.Phone,
                 Role = user.Role,
                 Status = user.Status,
