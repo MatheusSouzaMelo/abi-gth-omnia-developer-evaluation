@@ -34,7 +34,7 @@ public class ListUsersHandlerTests
         var users = ListUsersHandlerTestData.GenerateUsers(3).AsQueryable();
         var expectedResults = ListUsersHandlerTestData.GenerateUserResults(3).AsQueryable();
 
-        _userRepository.ListUsers(command.Order).Returns(users);
+        _userRepository.GetAll(command.Order).Returns(users);
         _mapper.ProjectTo<GetUserResult>(users).Returns(expectedResults);
 
         // When
@@ -44,7 +44,7 @@ public class ListUsersHandlerTests
         result.Should().NotBeNull();
         result.Users.Should().NotBeNull();
         result.Users.Should().HaveCount(3);
-        _userRepository.Received(1).ListUsers(command.Order);
+        _userRepository.Received(1).GetAll(command.Order);
     }
 
     ///<summary>
@@ -57,7 +57,7 @@ public class ListUsersHandlerTests
         var command = ListUsersHandlerTestData.GenerateValidCommand();
         var emptyUsers = ListUsersHandlerTestData.GenerateEmptyUsersList().AsQueryable();
 
-        _userRepository.ListUsers(command.Order).Returns(emptyUsers);
+        _userRepository.GetAll(command.Order).Returns(emptyUsers);
 
         // When
         var act = () => _handler.Handle(command, CancellationToken.None);
@@ -65,7 +65,7 @@ public class ListUsersHandlerTests
         // Then
         await act.Should().ThrowAsync<KeyNotFoundException>()
             .WithMessage("No users found");
-        _userRepository.Received(1).ListUsers(command.Order);
+        _userRepository.Received(1).GetAll(command.Order);
     }
 
     ///<summary>
@@ -79,7 +79,7 @@ public class ListUsersHandlerTests
         var users = ListUsersHandlerTestData.GenerateUsers(2).AsQueryable();
         var expectedResults = ListUsersHandlerTestData.GenerateUserResults(2).AsQueryable();
 
-        _userRepository.ListUsers(string.Empty).Returns(users);
+        _userRepository.GetAll(string.Empty).Returns(users);
         _mapper.ProjectTo<GetUserResult>(users).Returns(expectedResults);
 
         // When
@@ -89,7 +89,7 @@ public class ListUsersHandlerTests
         result.Should().NotBeNull();
         result.Users.Should().NotBeNull();
         result.Users.Should().HaveCount(2);
-        _userRepository.Received(1).ListUsers(string.Empty);
+        _userRepository.Received(1).GetAll(string.Empty);
     }
 
     ///<summary>
@@ -103,7 +103,7 @@ public class ListUsersHandlerTests
         var users = ListUsersHandlerTestData.GenerateUsers(1).AsQueryable();
         var expectedResults = ListUsersHandlerTestData.GenerateUserResults(1).AsQueryable();
 
-        _userRepository.ListUsers(command.Order).Returns(users);
+        _userRepository.GetAll(command.Order).Returns(users);
         _mapper.ProjectTo<GetUserResult>(users).Returns(expectedResults);
 
         // When

@@ -1,10 +1,12 @@
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.Domain.Entities;
+namespace Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 
 /// <summary>
@@ -87,6 +89,11 @@ public class User : BaseEntity, IUser
     /// Gets the user's address information.
     /// </summary>
     public Address Address { get; set; } = new Address();
+
+    /// <summary>
+    /// Carts of the user
+    /// </summary>
+    public List<Cart> Carts { get; set; } = [];
 
     /// <summary>
     /// Initializes a new instance of the User class.
