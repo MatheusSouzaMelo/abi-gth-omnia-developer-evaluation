@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
+using Ambev.DeveloperEvaluation.Application.Carts.CreateCart;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
 

@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories
 {
@@ -23,7 +24,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <param name="id">The unique identifier of the entity</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The entity if found, null otherwise</returns>
-        Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default, bool tracking = false, params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Gets all entities with optional ordering
@@ -31,7 +32,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <param name="order">Ordering string (e.g., "Name asc, Date desc")</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Queryable collection of entities</returns>
-        IQueryable<T> GetAll(string order, CancellationToken cancellationToken = default);
+        IQueryable<T> GetAll(string order, CancellationToken cancellationToken = default, bool tracking = false, params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Updates an existing entity

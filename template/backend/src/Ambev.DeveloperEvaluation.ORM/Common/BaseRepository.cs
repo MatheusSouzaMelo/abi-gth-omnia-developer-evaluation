@@ -2,6 +2,7 @@
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.ORM.Common
 {
@@ -37,12 +38,22 @@ namespace Ambev.DeveloperEvaluation.ORM.Common
         /// </summary>
         /// <param name="id">The unique identifier of the user</param>
         /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="includes">Cancellation token</param>
         /// <returns>The user if found, null otherwise</returns>
-        public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default, bool tracking = false, params Expression<Func<T, object>>[] includes)
         {
-            return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-        }
+            var query = _context.Set<T>().AsQueryable();
 
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            if(!tracking)
+                query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
 
         /// <summary>
         /// Get all entities
@@ -50,9 +61,18 @@ namespace Ambev.DeveloperEvaluation.ORM.Common
         /// <param name="order"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>entities if any</returns>
-        public IQueryable<T> GetAll(string order, CancellationToken cancellationToken = default)
+        public IQueryable<T> GetAll(string order, CancellationToken cancellationToken = default, bool tracking = false, params Expression<Func<T, object>>[] includes)
         {
-            var query = _context.Set<T>().AsQueryable().AsNoTracking();
+            var query = _context.Set<T>().AsQueryable();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            if (!tracking)
+                query.AsNoTracking();
+
             if (!string.IsNullOrEmpty(order))
                 return OrderQueryHelper.OrderQuery(query, order);
 
@@ -66,8 +86,9 @@ namespace Ambev.DeveloperEvaluation.ORM.Common
         /// <param name="cancellationToken"></param>
         /// <returns>the updated entity</returns>
         public async Task<T?> UpdateAsync(T entity, CancellationToken cancellationToken = default)
-        {
+        {   
             _context.Update(entity);
+
             var sucess = await _context.SaveChangesAsync(cancellationToken);
 
             return sucess <= 0 ? null : entity;

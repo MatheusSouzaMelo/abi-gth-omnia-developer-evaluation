@@ -35,5 +35,15 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
 
             return OrderQueryHelper.OrderQuery(query, order);
         }
+
+        public async Task<IEnumerable<Product>?> ListProductsByIdsAsync(IEnumerable<Guid> ProductIds, bool tracking = false, CancellationToken cancellationToken = default)
+        {
+            var query = _context.Products.Where(p => ProductIds.Contains(p.Id));
+
+            if(!tracking)
+                query.AsNoTracking();
+
+            return await query.ToListAsync(cancellationToken);
+        }
     }
 }

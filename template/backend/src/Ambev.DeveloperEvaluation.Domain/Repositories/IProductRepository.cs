@@ -26,5 +26,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The categories if found, null otherwise</returns>
         Task<IEnumerable<string>?> ListCategoriesAsync(CancellationToken cancellationToken = default);
+
+
+        /// <summary>
+        /// Retrieves products by ids
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The categories if found, null otherwise</returns>
+        Task<IEnumerable<Product>?> ListProductsByIdsAsync(IEnumerable<Guid> ProductIds, bool tracking = false, CancellationToken cancellationToken = default);
     }
 }
