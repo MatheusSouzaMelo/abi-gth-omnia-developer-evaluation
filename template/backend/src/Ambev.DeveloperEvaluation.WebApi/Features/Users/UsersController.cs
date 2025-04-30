@@ -8,10 +8,10 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
-using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
 using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
+using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 
@@ -47,8 +47,9 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ListUsers([FromQuery] PaginatedListRequest request, CancellationToken cancellationToken)
     {        
-        var command = _mapper.Map<ListUsersCommand>(request);
+        var command = _mapper.Map<PaginatedListCommand<ListUsersResult>>(request);
         var response = await _mediator.Send(command, cancellationToken);
+
         var paginatedList = await PaginatedList<GetUserResponse>.CreateAsync(
             source: _mapper.ProjectTo<GetUserResponse>(response.Users), 
             request.Page, 

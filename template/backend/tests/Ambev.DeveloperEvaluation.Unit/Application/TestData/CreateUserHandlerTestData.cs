@@ -1,7 +1,8 @@
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
+using Ambev.DeveloperEvaluation.Application.Carts.CreateCart;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.TestData;
 

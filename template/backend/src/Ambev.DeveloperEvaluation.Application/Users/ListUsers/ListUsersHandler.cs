@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -8,7 +9,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
     /// <summary>
     /// Handler for processing ListUserCommand requests
     /// </summary>
-    public class ListUsersHandler : IRequestHandler<ListUsersCommand, ListUsersResult>
+    public class ListUsersHandler : IRequestHandler<PaginatedListCommand<ListUsersResult>, ListUsersResult>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -26,12 +27,12 @@ namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
         /// <summary>
         /// Handles the GetUserCommand request
         /// </summary>
-        /// <param name="request">The ListUser command</param>
+        /// <param name="command">The ListUser command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The user details if found</returns>
-        public Task<ListUsersResult> Handle(ListUsersCommand request, CancellationToken cancellationToken)
+        public Task<ListUsersResult> Handle(PaginatedListCommand<ListUsersResult> command, CancellationToken cancellationToken)
         {
-            var userQuery = _userRepository.ListUsers(request.Order, cancellationToken);
+            var userQuery = _userRepository.GetAll(command.Order, cancellationToken);
 
             if (!userQuery.Any())
             {

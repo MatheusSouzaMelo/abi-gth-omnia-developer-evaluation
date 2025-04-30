@@ -1,8 +1,10 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
+using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
+using Ambev.DeveloperEvaluation.Application.Carts.ListCarts;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.TestData;
 
@@ -16,7 +18,7 @@ public static class ListUsersHandlerTestData
     /// Configures the Faker to generate valid ListUsersCommand entities.
     /// The generated commands will have valid order parameters.
     /// </summary>
-    private static readonly Faker<ListUsersCommand> listUsersCommandFaker = new Faker<ListUsersCommand>()
+    private static readonly Faker<PaginatedListCommand<ListUsersResult>> listUsersCommandFaker = new Faker<PaginatedListCommand<ListUsersResult>>()
         .RuleFor(c => c.Order, f => f.PickRandom("name", "email", "createdAt", "status"));
 
     /// <summary>
@@ -66,7 +68,7 @@ public static class ListUsersHandlerTestData
     /// <summary>
     /// Generates a valid ListUsersCommand with randomized order parameter.
     /// </summary>
-    public static ListUsersCommand GenerateValidCommand()
+    public static PaginatedListCommand<ListUsersResult> GenerateValidCommand()
     {
         return listUsersCommandFaker.Generate();
     }
@@ -74,9 +76,9 @@ public static class ListUsersHandlerTestData
     /// <summary>
     /// Generates a ListUsersCommand with empty order parameter.
     /// </summary>
-    public static ListUsersCommand GenerateEmptyOrderCommand()
+    public static PaginatedListCommand<ListUsersResult> GenerateEmptyOrderCommand()
     {
-        return new ListUsersCommand { Order = string.Empty };
+        return new PaginatedListCommand<ListUsersResult> { Order = string.Empty };
     }
 
     /// <summary>

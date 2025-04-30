@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 using AutoMapper;
@@ -8,6 +8,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Xunit;
+using Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users
 {
@@ -41,7 +42,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             _userRepository.GetByEmailAsync(command.Email).Returns(existingUser);
             _passwordHasher.HashPassword(command.Password).Returns("hashedPassword");
             _mapper.Map<User>(command).Returns(updatedUser);
-            _userRepository.UpdateUserAsync(updatedUser).Returns(updatedUser);
+            _userRepository.UpdateAsync(updatedUser).Returns(updatedUser);
             _mapper.Map<UpdateUserResult>(updatedUser).Returns(expectedResult);
 
             // When
@@ -51,7 +52,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             result.Should().NotBeNull();
             result.Should().Be(expectedResult);
             await _userRepository.Received().GetByEmailAsync(command.Email);
-            await _userRepository.Received().UpdateUserAsync(updatedUser);
+            await _userRepository.Received().UpdateAsync(updatedUser);
             _passwordHasher.Received().HashPassword(command.Password);
         }
 
@@ -73,7 +74,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             // Then
             await act.Should().ThrowAsync<InvalidOperationException>()
                 .WithMessage($"User with email {command.Email} already exists");
-            await _userRepository.DidNotReceiveWithAnyArgs().UpdateUserAsync(Arg.Any<User>(), default);
+            await _userRepository.DidNotReceiveWithAnyArgs().UpdateAsync(Arg.Any<User>(), default);
         }
 
         ///<summary>
@@ -93,7 +94,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             // Then
             await act.Should().ThrowAsync<KeyNotFoundException>()
                 .WithMessage($"User with ID {command.Id} not found");
-            await _userRepository.DidNotReceive().UpdateUserAsync(Arg.Any<User>());
+            await _userRepository.DidNotReceive().UpdateAsync(Arg.Any<User>());
         }
     }
 }

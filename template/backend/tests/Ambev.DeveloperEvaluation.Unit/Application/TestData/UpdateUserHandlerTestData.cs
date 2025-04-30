@@ -1,7 +1,8 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
+using Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.TestData
 {

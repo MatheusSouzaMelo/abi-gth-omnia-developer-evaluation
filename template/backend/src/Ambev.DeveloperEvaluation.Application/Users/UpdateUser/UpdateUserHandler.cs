@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -36,7 +36,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.UpdateUser
             var user = _mapper.Map<User>(command);
             user.Password = _passwordHasher.HashPassword(command.Password);
 
-            var updatedUser = await _userRepository.UpdateUserAsync(user, cancellationToken) ?? throw new KeyNotFoundException($"User with ID {command.Id} not found");
+            var updatedUser = await _userRepository.UpdateAsync(user, cancellationToken) ?? throw new KeyNotFoundException($"User with ID {command.Id} not found");
 
             return _mapper.Map<UpdateUserResult>(updatedUser);
         }
