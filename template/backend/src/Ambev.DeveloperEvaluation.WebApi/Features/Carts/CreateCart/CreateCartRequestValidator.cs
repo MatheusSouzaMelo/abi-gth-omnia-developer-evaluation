@@ -1,11 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CartProduct;
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.UpdateCart
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateCart
 {
-    public class UpdateCartRequestValidator : AbstractValidator<UpdateCartRequest>
+    public class CreateCartRequestValidator : AbstractValidator<CreateCartRequest>
     {
-        public UpdateCartRequestValidator()
+        public CreateCartRequestValidator()
         {
             RuleFor(cart => cart.UserId).NotEmpty();
             RuleFor(cart => cart.Date).NotEmpty();

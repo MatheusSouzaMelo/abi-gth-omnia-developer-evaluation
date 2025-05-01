@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.GetCart
     {
         public GetCartValidator()
         {
-            RuleFor(c => c.Id).NotEmpty();
+            RuleFor(c => c.Id).NotEmpty().WithMessage("Cart ID is required"); ;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.DeleteProduct
     {
         public DeleteProductValidator()
         {
-            RuleFor(p => p.Id).NotEmpty();
+            RuleFor(p => p.Id).NotEmpty().WithMessage("Id can not be empty");
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
 {
@@ -11,12 +6,12 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
     {
         public UpdateProductValidator()
         {
-            RuleFor(p => p.Id).NotEmpty();
-            RuleFor(p => p.Title).NotEmpty().NotNull();
-            RuleFor(p => p.Price).GreaterThan(0).NotEmpty();
-            RuleFor(p => p.Description).NotEmpty().NotNull();
-            RuleFor(p => p.Category).NotEmpty().NotNull();
-            RuleFor(p => p.Image).NotEmpty().NotNull();
+            RuleFor(p => p.Id).NotEmpty().WithMessage("Id can not be empty");
+            RuleFor(p => p.Title).NotEmpty().NotNull().WithMessage("Title can not be null or empty");
+            RuleFor(p => p.Price).GreaterThan(0).NotEmpty().WithMessage("Price must be grather than 0");
+            RuleFor(p => p.Description).NotEmpty().NotNull().WithMessage("Description can not be null or empty");
+            RuleFor(p => p.Category).NotEmpty().NotNull().WithMessage("Category can not be null or empty");
+            RuleFor(p => p.Image).NotEmpty().NotNull().WithMessage("Image can not be null or empty");
         }
     }
 }

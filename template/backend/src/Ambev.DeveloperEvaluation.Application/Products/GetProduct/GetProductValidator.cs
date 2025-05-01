@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct
     {
         public GetProductValidator()
         {
-            RuleFor(p => p.Id).NotEmpty();
+            RuleFor(p => p.Id).NotEmpty().WithMessage("Id can not be empty");
         }
     }
 }
