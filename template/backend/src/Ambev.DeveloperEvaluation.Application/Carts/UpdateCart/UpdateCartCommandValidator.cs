@@ -6,8 +6,8 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
     {
         public UpdateCartCommandValidator()
         {
-            RuleFor(cart => cart.Id).NotEmpty();
-            RuleFor(cart => cart.Date).NotEmpty();
+            RuleFor(cart => cart.UserId).NotEmpty().WithMessage("User Id can not be empty");
+            RuleFor(cart => cart.Date).NotEmpty().WithMessage("Cart date can not be empty");
             RuleFor(cart => cart.Products).NotEmpty();
         }
     }

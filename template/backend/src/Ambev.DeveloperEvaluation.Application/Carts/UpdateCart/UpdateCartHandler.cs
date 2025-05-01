@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -29,7 +30,12 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
 
             var existingCart = await _cartRepository.GetByIdAsync(command.Id, cancellationToken, true, c => c.Products) ?? throw new KeyNotFoundException($"Cart with ID {command.Id} not found");
 
-            await ValidateProductsAsync(command.Products, existingCart.Products, cancellationToken);
+            var (areAllProductsValid, message) = await ValidateCartProductsHelper.ValidateCartProductsAsync(_productRepository, command.Products, cancellationToken);
+
+            if (!areAllProductsValid)
+            {
+                throw new ValidationException(message);
+            }
 
             UpdateCartProducts(existingCart, command.Products);
 
@@ -38,26 +44,7 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
             return _mapper.Map<UpdateCartResult>(updatedCart);
         }
 
-        private async Task ValidateProductsAsync(List<CartProductCommand> productsToUpdate, List<CartProduct> existingCartProducts, CancellationToken cancellationToken)
-        {
-            var existingProducts = await _productRepository.ListProductsByIdsAsync(productsToUpdate.Select(p => p.ProductId), false, cancellationToken) ?? throw new KeyNotFoundException($"No products found");
-
-            if (existingProducts.Count() != productsToUpdate.Count)
-            {
-                var productsIds = productsToUpdate.Select(p => p.ProductId).ToList();
-                var notFoundProducts = new List<Guid>();
-
-                foreach (var productId in productsIds)
-                {
-                    if (existingProducts.Any(p => p.Id != productId))
-                        notFoundProducts.Add(productId);
-                }
-
-                throw new KeyNotFoundException($"Products with id {string.Join("; ", productsIds)} not found");
-            }
-        }
-
-        private static void UpdateCartProducts(Cart cart, List<CartProductCommand> productsToUpdate)
+        private void UpdateCartProducts(Cart cart, List<CartProductCommand> productsToUpdate)
         {
 
             cart.Products.RemoveAll(p => !productsToUpdate.Any(ptu => ptu.ProductId == p.ProductId));
@@ -73,12 +60,8 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
                 }
                 else
                 {
-                    cart.Products.Add(new CartProduct
-                    {
-                        ProductId = productCmd.ProductId,
-                        Quantity = productCmd.Quantity,
-                        CartId = cart.Id
-                    });
+                    var cartProduct = _mapper.Map<CartProduct>(productCmd);
+                    cart.Products.Add(cartProduct);
                 }
             }
         }

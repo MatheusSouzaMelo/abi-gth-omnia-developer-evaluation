@@ -74,6 +74,10 @@ public class CartsController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCart([FromBody] CreateCartRequest request, CancellationToken cancellationToken)
     {
+        var createCartCommandValidator = new CreateCartRequestValidator();
+        var validationResult = createCartCommandValidator.Validate(request);
+
+        if (!validationResult.IsValid) return BadRequest(validationResult.Errors);
 
         var command = _mapper.Map<CreateCartCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
