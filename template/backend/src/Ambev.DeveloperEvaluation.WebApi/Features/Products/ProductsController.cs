@@ -113,7 +113,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             var request = new DeleteProductRequest { Id = id };
             var command = _mapper.Map<DeleteProductCommand>(request);
 
-            await _mediator.Send(command, cancellationToken);
+            var result = await _mediator.Send(command, cancellationToken);
+
+            if (!result.Success)
+                return BadRequest("Error deleting product");
 
             return Ok(new ApiResponse
             {

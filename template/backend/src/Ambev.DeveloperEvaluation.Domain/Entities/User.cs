@@ -91,11 +91,6 @@ public class User : BaseEntity, IUser
     public Address Address { get; set; } = new Address();
 
     /// <summary>
-    /// Carts of the user
-    /// </summary>
-    public List<Cart> Carts { get; set; } = [];
-
-    /// <summary>
     /// Initializes a new instance of the User class.
     /// </summary>
     public User()

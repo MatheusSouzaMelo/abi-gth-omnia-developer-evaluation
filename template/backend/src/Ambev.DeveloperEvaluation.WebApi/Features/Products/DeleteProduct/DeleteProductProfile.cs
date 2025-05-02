@@ -8,7 +8,6 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct
         public DeleteProductProfile()
         {
             CreateMap<DeleteProductRequest, DeleteProductCommand>();
-            CreateMap<DeleteProductResult, DeleteProductResult>();
         }
     }
 }

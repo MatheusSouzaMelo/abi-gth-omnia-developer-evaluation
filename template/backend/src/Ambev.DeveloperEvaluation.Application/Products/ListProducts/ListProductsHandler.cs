@@ -20,6 +20,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
         public Task<ListProductsResult> Handle(PaginatedListCommand<ListProductsResult> command, CancellationToken cancellationToken)
         {
             var productsQuery = _productRepository.ListProducts(command.Order, command.By.ToLower().Trim(), cancellationToken);
+
             if (productsQuery == null || !productsQuery.Any())
                 throw new KeyNotFoundException("No product were found");
 

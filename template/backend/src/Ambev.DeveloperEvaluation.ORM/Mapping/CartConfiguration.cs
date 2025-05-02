@@ -17,12 +17,12 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
             builder.Property(c => c.Date).IsRequired();
 
             builder.HasMany(c => c.Products)
-            .WithOne(i => i.Cart)
+            .WithOne()
             .HasForeignKey(i => i.CartId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(c => c.User)
-                .WithMany(u => u.Carts)
+                .WithMany()
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

@@ -11,13 +11,15 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
 
-        public UpdateCartHandler(ICartRepository CartRepository, IMapper mapper, IProductRepository productRepository)
+        public UpdateCartHandler(ICartRepository CartRepository, IMapper mapper, IProductRepository productRepository, ISaleRepository saleRepository)
         {
             _cartRepository = CartRepository;
             _mapper = mapper;
             _productRepository = productRepository;
+            _saleRepository = saleRepository;
         }
 
         public async Task<UpdateCartResult> Handle(UpdateCartCommand command, CancellationToken cancellationToken)
@@ -29,6 +31,11 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
                 throw new ValidationException(validationResult.Errors);
 
             var existingCart = await _cartRepository.GetByIdAsync(command.Id, cancellationToken, true, c => c.Products) ?? throw new KeyNotFoundException($"Cart with ID {command.Id} not found");
+
+            var sale = await _saleRepository.GetSaleByCartId(command.Id);
+
+            if (sale != null)
+                throw new InvalidOperationException("Can not update a cart after a sale is made");
 
             var (areAllProductsValid, message) = await ValidateCartProductsHelper.ValidateCartProductsAsync(_productRepository, command.Products, cancellationToken);
 
