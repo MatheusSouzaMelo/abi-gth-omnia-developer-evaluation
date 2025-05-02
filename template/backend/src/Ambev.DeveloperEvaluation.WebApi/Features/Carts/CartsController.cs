@@ -130,7 +130,10 @@ public class CartsController : BaseController
             return BadRequest(validationResult.Errors);
 
         var command = _mapper.Map<DeleteCartCommand>(request);
-        await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
+
+        if (!result.Success)
+            return BadRequest("Error deleting cart");
 
         return Ok(new ApiResponse
         {

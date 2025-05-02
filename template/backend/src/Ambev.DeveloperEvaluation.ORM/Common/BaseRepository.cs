@@ -50,7 +50,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Common
             }
 
             if(!tracking)
-                query.AsNoTracking();
+               query = query.AsNoTracking();
 
             return await query.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
@@ -71,7 +71,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Common
             }
 
             if (!tracking)
-                query.AsNoTracking();
+              query = query.AsNoTracking();
 
             if (!string.IsNullOrEmpty(order))
                 return OrderQueryHelper.OrderQuery(query, order);
